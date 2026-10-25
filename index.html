@@ -1,106 +1,468 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StudentWell | Academic Insights</title>
+<title>StudentWell - Academic Insights</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f3ff;color:#242448}
-header{background:linear-gradient(120deg,#5146c7,#8874f5);color:white;padding:35px 20px}
-header h1{margin:0 0 10px;font-size:30px}
-header p{margin:0;line-height:1.6}
-main{max-width:1050px;margin:25px auto;padding:0 16px}
-h2{color:#5146c7}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
-.card{background:white;padding:22px;border-radius:16px;box-shadow:0 5px 18px #29205a12}
-.number{font-size:27px;font-weight:bold;color:#6555dc;margin:10px 0}
-.panel{background:white;padding:22px;border-radius:16px;margin-top:20px;box-shadow:0 5px 18px #29205a12}
-li{margin:12px 0;line-height:1.5}
-input,button{padding:12px;border-radius:8px;border:1px solid #ccc}
-button{background:#6254d8;color:white;border:0;cursor:pointer}
-footer{text-align:center;padding:25px;color:#686887}
-.note{font-size:13px;color:#666}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:#0b1120;color:#e2e8f0;line-height:1.7}
+header{padding:40px 8%;background:linear-gradient(135deg,#020617,#172554,#164e63)}
+header h1{font-size:40px;color:white}
+header p{color:#cbd5e1;margin-top:8px}
+.tag{display:inline-block;color:#67e8f9;background:#164e63;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+nav{background:#111827;padding:16px 8%;display:flex;gap:20px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+nav a{color:#67e8f9;text-decoration:none;font-weight:bold}
+nav a:hover{color:white}
+.container{width:88%;max-width:1150px;margin:30px auto}
+.welcome,.panel,.card,.about{background:#172033;border:1px solid #334155;border-radius:14px;padding:22px}
+.welcome{margin-bottom:28px}
+h2{color:#67e8f9;margin-bottom:12px}
+.section-title{margin:32px 0 14px;color:white}
+.subtitle,.small{color:#94a3b8;font-size:14px;margin-bottom:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.card{border-top:3px solid #06b6d4}
+.card h3{margin:8px 0;color:white}
+.card p{font-size:14px;color:#cbd5e1}
+.metric{font-size:27px;font-weight:bold;color:#67e8f9;margin:10px 0}
+.emoji{font-size:28px}
+button{background:#0369a1;color:white;border:0;border-radius:8px;padding:10px 15px;margin-top:12px;cursor:pointer;font-weight:bold}
+button:hover{background:#0284c7}
+.panel{margin-top:18px}
+input[type=file]{display:block;width:100%;margin:16px 0;padding:12px;background:#0b1120;color:white;border:1px dashed #06b6d4;border-radius:8px}
+#status{margin-top:12px;color:#67e8f9;overflow-wrap:anywhere}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+canvas{width:100%;height:260px;display:block;margin-top:15px}
+.question{background:#0b1120;border-left:4px solid #06b6d4;padding:16px;margin:14px 0;border-radius:8px}
+.question h3{color:#67e8f9;margin-bottom:6px}
+.about{margin-top:20px}
+footer{text-align:center;padding:24px;margin-top:40px;background:#020617;color:#94a3b8}
+@media(max-width:600px){header h1{font-size:30px}.container{width:92%}}
 </style>
 </head>
+
 <body>
 <header>
-<h1>StudentWell 📚</h1>
-<p>Student Sleep, Screen Time and Academic Performance</p>
-<p>Exploring how daily habits relate to student academic outcomes.</p>
+<div class="tag">STUDENT DATA ANALYTICS</div>
+<h1>StudentWell</h1>
+<p>Academic Insights | Sleep, Screen Time and Student Performance</p>
+<p>Explore student habits through data and visualizations.</p>
 </header>
-<main>
-<h2>Project Dashboard</h2>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#dashboard">Dashboard</a>
+<a href="#data">Upload Data</a>
+<a href="#charts">Charts</a>
+<a href="#research">Research</a>
+<a href="#about">About</a>
+</nav>
+
+<main class="container">
+
+<section id="home" class="welcome">
+<h2>Welcome to StudentWell</h2>
+<p>This project explores student sleep duration, daily screen time and academic performance using data analysis. Upload a CSV dataset to calculate averages and explore charts.</p>
+</section>
+
+<section id="dashboard">
+<h2 class="section-title">Academic Insights Dashboard</h2>
+<p class="subtitle">Upload your dataset to display the results.</p>
+
 <div class="cards">
-<div class="card">📊<p>Dataset Size</p><div class="number" id="total">500</div><p>Student records</p></div>
-<div class="card">🌙<p>Average Sleep</p><div class="number" id="sleep">Explore</div><p>Hours per weekday</p></div>
-<div class="card">📱<p>Screen Time</p><div class="number" id="screen">Explore</div><p>Hours per day</p></div>
-<div class="card">🎓<p>Average CGPA</p><div class="number" id="cgpa">Explore</div><p>Academic performance</p></div>
+<div class="card">
+<div class="emoji">😴</div>
+<h3>Average Sleep</h3>
+<p>Weekday sleep duration in hours.</p>
+<div class="metric" id="sleepMetric">--</div>
+<button onclick="explore('sleep')">Explore Sleep</button>
 </div>
-<div class="panel">
-<h2>About the Project</h2>
-<p>This project explores a student dataset to understand patterns involving sleep duration, screen usage, study habits, attendance and CGPA.</p>
-<p>Data analysis helps us investigate relationships between lifestyle choices and academic performance. A relationship does not necessarily mean that one factor causes another.</p>
+
+<div class="card">
+<div class="emoji">📱</div>
+<h3>Daily Screen Time</h3>
+<p>Average screen usage in hours.</p>
+<div class="metric" id="screenMetric">--</div>
+<button onclick="explore('screen')">Explore Screen Time</button>
 </div>
-<div class="panel">
-<h2>Key Research Questions</h2>
-<ul>
-<li>How is weekday sleep duration related to academic performance?</li>
-<li>What patterns exist between daily screen time and CGPA?</li>
-<li>How do study hours and class attendance relate to grades?</li>
-<li>Why are sleep, concentration and healthy routines important for students?</li>
-</ul>
+
+<div class="card">
+<div class="emoji">🎓</div>
+<h3>Average CGPA</h3>
+<p>Average CGPA in the dataset.</p>
+<div class="metric" id="cgpaMetric">--</div>
+<button onclick="explore('cgpa')">Explore CGPA</button>
 </div>
+
+<div class="card">
+<div class="emoji">👥</div>
+<h3>Total Students</h3>
+<p>Student records analyzed.</p>
+<div class="metric" id="studentMetric">--</div>
+<button onclick="explore('students')">Explore Students</button>
+</div>
+</div>
+</section>
+
+<section id="data">
+<h2 class="section-title">Upload Your Dataset</h2>
 <div class="panel">
-<h2>Explore Your Dataset</h2>
-<p>Upload the original project CSV to calculate summary statistics from your data.</p>
-<input type="file" id="csv" accept=".csv">
-<p class="note">Required columns: avg_sleep_hours_weekday, daily_screen_time_hours, cgpa. The file is processed in your browser.</p>
+<h3>📂 Import CSV File</h3>
+<p>Select your student dataset in CSV format.</p>
+<input type="file" id="csvFile" accept=".csv,text/csv">
+<p class="small">Required columns: avg_sleep_hours_weekday, daily_screen_time_hours, cgpa</p>
+<button onclick="loadCSV()">Analyze Dataset</button>
 <p id="status">No dataset uploaded yet.</p>
 </div>
+</section>
+
+<section id="charts">
+<h2 class="section-title">Data Visualizations</h2>
+<p class="subtitle">Charts update after you upload your dataset.</p>
+<div class="chart-grid">
 <div class="panel">
-<h2>Conclusion</h2>
-<p>Student lifestyle and academic performance can be explored using data analysis, visualizations and correlation. The original dataset should be analyzed before drawing conclusions about the relationships between these factors.</p>
+<h3>Average Student Habits</h3>
+<canvas id="habitsChart"></canvas>
 </div>
+<div class="panel">
+<h3>Sleep and Screen Time</h3>
+<canvas id="screenChart"></canvas>
+</div>
+<div class="panel">
+<h3>CGPA Distribution</h3>
+<canvas id="cgpaChart"></canvas>
+</div>
+</div>
+</section>
+
+<section id="research">
+<h2 class="section-title">Research Questions</h2>
+
+<div class="question">
+<h3>1. Is sleep related to academic performance?</h3>
+<p>We compare average weekday sleep duration with students' CGPA.</p>
+</div>
+
+<div class="question">
+<h3>2. Is screen time related to CGPA?</h3>
+<p>We explore whether daily screen time and academic performance show a relationship.</p>
+</div>
+
+<div class="question">
+<h3>3. What can we learn from the dataset?</h3>
+<p>Summary statistics and visualizations help identify patterns in student habits.</p>
+</div>
+
+<p id="insights" class="panel">Upload a CSV dataset to generate your insights.</p>
+</section>
+
+<section id="about">
+<div class="about">
+<h2>About StudentWell</h2>
+<p>StudentWell is a student mini-project that uses data analysis and visualization to explore sleep, screen time and academic performance.</p>
+<p style="margin-top:10px">The website calculates summary statistics from the uploaded CSV file directly in your browser.</p>
+</div>
+</section>
+
 </main>
-<footer>StudentWell | Student Data Analysis Project</footer>
+
+<footer>
+<p>StudentWell | Academic Insights Mini Project</p>
+<p>Data-driven exploration of student habits</p>
+</footer>
+
 <script>
-document.getElementById('csv').addEventListener('change',async function(){
-const status=document.getElementById('status');
-const file=this.files[0];
-if(!file)return;
-try{
-const text=await file.text();
-const rows=text.trim().split(/\r?\n/);
-function parse(line){
-const out=[];let value='',quoted=false;
-for(let i=0;i<line.length;i++){
-const c=line[i];
-if(c==='"'&&line[i+1]==='"'&&quoted){value+='"';i++}
-else if(c==='"'){quoted=!quoted}
-else if(c===','&&!quoted){out.push(value);value=''}
-else value+=c;
+let studentData = [];
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quoted = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+
+    if (ch === '"') {
+      if (quoted && text[i + 1] === '"') {
+        cell += '"';
+        i++;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (ch === "," && !quoted) {
+      row.push(cell.trim());
+      cell = "";
+    } else if ((ch === "\n" || ch === "\r") && !quoted) {
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      row.push(cell.trim());
+      if (row.some(value => value !== "")) rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += ch;
+    }
+  }
+
+  row.push(cell.trim());
+  if (row.some(value => value !== "")) rows.push(row);
+  return rows;
 }
-out.push(value);return out;
+
+function average(values) {
+  const valid = values.filter(value => Number.isFinite(value));
+  if (valid.length === 0) return null;
+  return valid.reduce((sum, value) => sum + value, 0) / valid.length;
 }
-const headers=parse(rows[0]).map(s=>s.trim());
-const data=rows.slice(1).filter(s=>s.trim()).map(parse);
-function average(name){
-const i=headers.indexOf(name);
-if(i<0)throw Error('Missing column: '+name);
-const values=data.map(r=>Number(r[i])).filter(Number.isFinite);
-if(!values.length)throw Error('No numeric data for '+name);
-return values.reduce((a,b)=>a+b,0)/values.length;
+
+function numberValue(value) {
+  if (value === undefined || value.trim() === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
 }
-document.getElementById('total').textContent=data.length;
-document.getElementById('sleep').textContent=average('avg_sleep_hours_weekday').toFixed(1);
-document.getElementById('screen').textContent=average('daily_screen_time_hours').toFixed(1);
-document.getElementById('cgpa').textContent=average('cgpa').toFixed(2);
-status.textContent='Dataset loaded successfully! Summary values are based on your uploaded CSV.';
-}catch(e){status.textContent='Could not read the dataset: '+e.message+'. Please check the CSV columns.'}
+
+function loadCSV() {
+  const fileInput = document.getElementById("csvFile");
+  const status = document.getElementById("status");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    status.textContent = "Please select a CSV file first.";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    try {
+      const rows = parseCSV(event.target.result);
+
+      if (rows.length < 2) {
+        status.textContent = "The CSV file has no student data rows.";
+        return;
+      }
+
+      const headers = rows[0].map(header =>
+        header.trim().replace(/^\uFEFF/, "").toLowerCase()
+      );
+
+      const sleepIndex = headers.indexOf("avg_sleep_hours_weekday");
+      const screenIndex = headers.indexOf("daily_screen_time_hours");
+      const cgpaIndex = headers.indexOf("cgpa");
+
+      if (sleepIndex === -1 || screenIndex === -1 || cgpaIndex === -1) {
+        status.textContent =
+          "Required columns not found. Please check the exact column names listed above.";
+        return;
+      }
+
+      studentData = rows.slice(1).map(row => ({
+        sleep: numberValue(row[sleepIndex] || ""),
+        screen: numberValue(row[screenIndex] || ""),
+        cgpa: numberValue(row[cgpaIndex] || "")
+      })).filter(student =>
+        student.sleep !== null ||
+        student.screen !== null ||
+        student.cgpa !== null
+      );
+
+      if (studentData.length === 0) {
+        status.textContent = "No valid student records were found.";
+        return;
+      }
+
+      const sleepAvg = average(studentData.map(s => s.sleep));
+      const screenAvg = average(studentData.map(s => s.screen));
+      const cgpaAvg = average(studentData.map(s => s.cgpa));
+
+      document.getElementById("sleepMetric").textContent =
+        sleepAvg === null ? "N/A" : sleepAvg.toFixed(2) + " hrs";
+
+      document.getElementById("screenMetric").textContent =
+        screenAvg === null ? "N/A" : screenAvg.toFixed(2) + " hrs";
+
+      document.getElementById("cgpaMetric").textContent =
+        cgpaAvg === null ? "N/A" : cgpaAvg.toFixed(2);
+
+      document.getElementById("studentMetric").textContent =
+        studentData.length;
+
+      status.textContent =
+        "Success! Analyzed " + studentData.length +
+        " student records from " + file.name + ".";
+
+      document.getElementById("insights").textContent =
+        "Dataset summary: Average weekday sleep is " +
+        (sleepAvg === null ? "unavailable" : sleepAvg.toFixed(2) + " hours") +
+        ", average daily screen time is " +
+        (screenAvg === null ? "unavailable" : screenAvg.toFixed(2) + " hours") +
+        ", and average CGPA is " +
+        (cgpaAvg === null ? "unavailable" : cgpaAvg.toFixed(2)) +
+        ". These are descriptive averages and do not prove cause and effect.";
+
+      drawBarChart("habitsChart",
+        ["Sleep", "Screen time", "CGPA"],
+        [sleepAvg, screenAvg, cgpaAvg]);
+
+      drawBarChart("screenChart",
+        ["Sleep", "Screen time"],
+        [sleepAvg, screenAvg]);
+
+      drawDistribution("cgpaChart",
+        studentData.map(s => s.cgpa).filter(v => v !== null));
+
+    } catch (error) {
+      status.textContent = "Unable to read this file. Please check the CSV format.";
+    }
+  };
+
+  reader.onerror = function() {
+    status.textContent = "The file could not be read. Please try again.";
+  };
+
+  reader.readAsText(file);
+}
+
+function drawBarChart(canvasId, labels, values) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width = Math.max(280, canvas.clientWidth * 2);
+  const height = canvas.height = 520;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#172033";
+  ctx.fillRect(0, 0, width, height);
+
+  const valid = values.filter(v => v !== null && Number.isFinite(v));
+  if (valid.length === 0) {
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "28px Arial";
+    ctx.fillText("Upload data to view chart", 20, 70);
+    return;
+  }
+
+  const max = Math.max(...valid, 1) * 1.2;
+  const left = 35;
+  const bottom = height - 80;
+  const chartHeight = height - 150;
+  const slot = (width - 70) / labels.length;
+
+  labels.forEach((label, i) => {
+    const value = values[i];
+    const x = left + i * slot + slot * 0.2;
+    const barWidth = slot * 0.6;
+    const barHeight = value === null ? 0 : (value / max) * chartHeight;
+
+    ctx.fillStyle = "#0891b2";
+    ctx.fillRect(x, bottom - barHeight, barWidth, barHeight);
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(value === null ? "N/A" : value.toFixed(2), x + barWidth / 2, bottom - barHeight - 12);
+
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "20px Arial";
+    ctx.fillText(label, x + barWidth / 2, bottom + 35);
+  });
+}
+
+function drawDistribution(canvasId, values) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width = Math.max(280, canvas.clientWidth * 2);
+  const height = canvas.height = 520;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#172033";
+  ctx.fillRect(0, 0, width, height);
+
+  if (values.length === 0) {
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "28px Arial";
+    ctx.fillText("No CGPA values available", 20, 70);
+    return;
+  }
+
+  const bins = 5;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+  const counts = Array(bins).fill(0);
+
+  values.forEach(value => {
+    let index = Math.floor(((value - min) / range) * bins);
+    if (index >= bins) index = bins - 1;
+    counts[index]++;
+  });
+
+  const highest = Math.max(...counts, 1);
+  const left = 40;
+  const bottom = height - 75;
+  const chartHeight = height - 150;
+  const slot = (width - 80) / bins;
+
+  counts.forEach((count, i) => {
+    const barHeight = (count / highest) * chartHeight;
+    const x = left + i * slot + slot * 0.15;
+    const barWidth = slot * 0.7;
+
+    ctx.fillStyle = "#0891b2";
+    ctx.fillRect(x, bottom - barHeight, barWidth, barHeight);
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "23px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(String(count), x + barWidth / 2, bottom - barHeight - 10);
+
+    const start = min + (range * i / bins);
+    const end = min + (range * (i + 1) / bins);
+
+    ctx.fillStyle = "#cbd5e1";
+    ctx.font = "17px Arial";
+    ctx.fillText(start.toFixed(1) + "-" + end.toFixed(1),
+      x + barWidth / 2, bottom + 30);
+  });
+}
+
+function explore(topic) {
+  const messages = {
+    sleep: "Average sleep is calculated from avg_sleep_hours_weekday in your CSV dataset.",
+    screen: "Average screen time is calculated from daily_screen_time_hours in your CSV dataset.",
+    cgpa: "Average CGPA is calculated from the cgpa column in your CSV dataset.",
+    students: "The total is the number of student records found in your uploaded CSV file."
+  };
+
+  document.getElementById("status").textContent =
+    messages[topic] || "Explore the uploaded student dataset.";
+
+  document.getElementById("data").scrollIntoView({behavior:"smooth"});
+}
+
+window.addEventListener("resize", function() {
+  if (studentData.length > 0) {
+    drawBarChart("habitsChart",
+      ["Sleep", "Screen time", "CGPA"],
+      [
+        average(studentData.map(s => s.sleep)),
+        average(studentData.map(s => s.screen)),
+        average(studentData.map(s => s.cgpa))
+      ]);
+
+    drawBarChart("screenChart",
+      ["Sleep", "Screen time"],
+      [
+        average(studentData.map(s => s.sleep)),
+        average(studentData.map(s => s.screen))
+      ]);
+
+    drawDistribution("cgpaChart",
+      studentData.map(s => s.cgpa).filter(v => v !== null));
+  }
 });
 </script>
+
 </body>
-  </html>
-  
+</html>
